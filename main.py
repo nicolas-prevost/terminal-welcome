@@ -1,4 +1,6 @@
-from PIL import Image
+import sys
+from datetime import datetime
+from random import randrange
 
 class colors:
         black='\033[30m'
@@ -17,28 +19,32 @@ class colors:
         pink='\033[95m'
         lightcyan='\033[96m'
 
-scale="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'.k+i*width//cx "
+def binaryguess():
+    with open("data.txt",'a',encoding = 'utf-8') as f:
+        guess = randrange(32)
+        guess2 = guess
+        s = ''
+        while guess != 0:
+            if guess % 2 == 0:
+                s += '0'
+            else:
+                s += '1'
+            guess//=2
+        #print(guess2)
+        s = s[::-1]
+        print(s)
 
-with Image.open("unicorn.jpg") as im:
-    px = im.load()
-    height = im.height
-    width = im.width
-    cx=50
-    cy=50
+        res = 1
+        if int(input("Enter your value: ")) != guess2:
+            print('\033[31m','wrong','anwser -> ', guess2)
+            res = 0
+        else:
+            print('\033[32m','right!')
 
-    for i in range(cx):
-        for j in range(cy):
-            sum=0
-            for k in range(width//cx):
-                for l in range(height//cy):
-                    p=px[ k+i*width//cx,l+j*height//cy]
-                    sum+= (p[0]+p[1]+p[2])//3
-            #print((p[0]+p[1]+p[2])//3,end=' ')
-            #print(sum//(30*30), end=" ")
-            print(scale[sum//(cx*cy)*len(scale)//255],end=' ')
-        print('')
+        f.write(str(res) + ' ')
+        f.write(str(guess2) + ' ')
+        f.write(datetime.today().strftime('%Y-%m-%d') + '\n')
 
+binaryguess()
 
-
-
-print(colors.orange,'test',colors.yellow,'et ici?')
+#print(colors.orange,'test',colors.yellow,'et ici?')
